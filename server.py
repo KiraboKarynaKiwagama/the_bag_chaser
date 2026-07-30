@@ -7,7 +7,7 @@ import json
 import functools
 
  
-PORT = 5000
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
 PUBLIC_FOLDER = "public"  #where index.html, style.css, script.js live
 
 REMOTIVE_API_URL = "https://remotive.com/api/remote-jobs"
