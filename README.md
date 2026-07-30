@@ -71,11 +71,6 @@ libraries.
 
 ## Deployment
 
-<!--
-Fill this section in once deployment is done. Suggested structure below —
-replace the placeholders with what you actually did.
--->
-
 The application is deployed on two web servers (Web01 and Web02) behind a
 load balancer (Lb01), which distributes incoming traffic between them.
 
@@ -89,23 +84,54 @@ load balancer (Lb01), which distributes incoming traffic between them.
    cd the_bag_chaser
    python3 server.py
    ```
-   (kept running in the background using `[TOOL YOU USED, e.g. pm2 / nohup / systemd]`)
-3. Configured Lb01 (`[Nginx / HAProxy]`) to forward incoming traffic evenly
-   between Web01 (`[IP ADDRESS]`) and Web02 (`[IP ADDRESS]`).
-4. Verified traffic was being split between both servers by
-   `[HOW YOU VERIFIED — e.g. checking each server's logs while refreshing
-   the load balancer's address repeatedly]`.
+   (kept running in the background using `nohup` so the app stays alive after disconnecting from ssh)
+3. Configured Lb01 using **HAProxy**, editing `/etc/haproxy/haproxy.cfg`
+   to load balance between Web01 (`13.49.125.58`) and Web02
+   (`54.159.207.54`) using the `roundrobin` algorithm, then restarted
+   the service with `sudo systemctl restart haproxy`.
+4. 4. Verified traffic was being split between both servers by temporarily
+   editing the heading in Web02's `index.html` file so it displayed
+   differently from Web01. I initially tried to verify this by watching
+   each server's `server.log` file live in the terminal, but ran into
+   issues tracking the logs this way. Switching to the visual heading
+   difference was a more reliable way to confirm behavior: repeatedly
+   refreshing the load balancer's address in Chrome showed the heading
+   alternating between the two versions, confirming HAProxy was
+   genuinely distributing requests across both servers rather than
+   always hitting the same one.
 
-**Live application (via load balancer):** `[LOAD BALANCER URL]`
+**Live application (via load balancer):** `http://34.227.16.186`
 
 ## Challenges faced
 
-<!--
-Write 2-4 sentences here, specific to what actually happened to you.
-For example, mention the SSH "public key" / connection timeout issue you
-ran into, and how you resolved it. Specific, real details here will make
-this section stronger than generic statements.
--->
+The biggest challenge was server access. My originally-assigned Web01
+became unreachable partway through the project — SSH connections timed
+out entirely, with no response from the server. After confirming this
+wasn't a mistake on my end (wrong key, wrong command), I worked around
+it by launching a replacement server on AWS EC2, installing the same
+dependencies, and pointing the load balancer at its address instead.
+
+I also found that Web02 came with nginx pre-installed and already bound
+to port 80, which conflicted with my own app trying to use that same
+port. I resolved this by stopping and disabling the nginx service before
+starting my own server.
+
+Tracking whether the load balancer was actually splitting traffic
+between both servers was tricky at first, since both servers were
+running the exact same app and looked identical from the outside. I
+solved this by temporarily editing the heading in Web02's HTML file, so
+that refreshing the load balancer's address in Chrome would visibly
+alternate between the two versions, confirming both servers were
+genuinely being used.
+
+I also ran into a confusing moment testing external access from a family
+member's laptop: I initially typed "https" instead of "http" in the
+address bar by mistake, which made it look like a firewall was blocking
+the connection entirely. After realizing the typo and correcting it, I
+was able to properly test — and confirmed the load balancer works
+correctly from within the school's network, but external requests from
+outside networks do time out, which appears to be a network-level
+restriction rather than an application issue.
 
 ## Demo video
 
