@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Job Finder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>THE BAG CHASER</h1>
+        <h2>The ultimate remote job finder</h2>
+        <p>Search live remote job listings, pulled from the Remotive job board.</p>
+    </header>
+
+    <main>
+        <section class="controls">
+            <input type="text" id="searchInput" placeholder="Search job titles (e.g. developer, designer)">
+
+            <select id="categorySelect">
+                <option value="">All categories</option>
+                <option value="software-dev">Software Development</option>
+                <option value="customer-service">Customer Service</option>
+                <option value="design">Design</option>
+                <option value="marketing">Marketing</option>
+                <option value="sales-business">Sales / Business</option>
+                <option value="product">Product</option>
+            </select>
+
+            <select id="sortSelect">
+                <option value="date">Sort by: Newest first</option>
+                <option value="company">Sort by: Company name (A-Z)</option>
+                <option value="title">Sort by: Job title (A-Z)</option>
+            </select>
+
+            <button id="searchButton">Search</button>
+        </section>
+
+    
+        <p id="statusMessage"></p>
+
+        
+        <section id="resultsContainer"></section>
+    </main>
+
+    <footer>
+        <p>Job data provided by the <a href="https://remotive.com" target="_blank">Remotive</a> API.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
