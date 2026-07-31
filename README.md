@@ -135,7 +135,7 @@ restriction rather than an application issue.
 
 ## Demo video
 
-`[https://youtu.be/fvz90RLTbvs]`
+`https://youtu.be/fvz90RLTbvs`
 
 ## Credits
 
