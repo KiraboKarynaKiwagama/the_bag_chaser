@@ -5,15 +5,15 @@ import urllib.parse
 import urllib.error
 import json
 import functools
-import sys 
+import sys
 
  
 PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
 PUBLIC_FOLDER = "public"  #where index.html, style.css, script.js live
 
 REMOTIVE_API_URL = "https://remotive.com/api/remote-jobs"
- 
- 
+
+
 class RequestHandler(http.server.SimpleHTTPRequestHandler):
    
     def do_GET(self):
@@ -69,21 +69,21 @@ class RequestHandler(http.server.SimpleHTTPRequestHandler):
                 })
  
             self.send_json_response({"success": True, "jobs": jobs}, status=200)
- 
+
         except urllib.error.URLError:
             #covers no internet, Remotive is down, DNS failure, timeout,.
             self.send_json_response({
                 "success": False,
                 "error": "Could not reach the job listings service right now. Please try again shortly."
             }, status=502)
- 
+
         except json.JSONDecodeError:
             #covers Remotive responded, but not with valid JSON.
             self.send_json_response({
                 "success": False,
                 "error": "Received an unexpected response from the job listings service."
             }, status=502)
- 
+
         except Exception:
             self.send_json_response({
                 "success": False,

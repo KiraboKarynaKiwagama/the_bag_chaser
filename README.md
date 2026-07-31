@@ -89,7 +89,7 @@ load balancer (Lb01), which distributes incoming traffic between them.
    to load balance between Web01 (`13.49.125.58`) and Web02
    (`54.159.207.54`) using the `roundrobin` algorithm, then restarted
    the service with `sudo systemctl restart haproxy`.
-4. 4. Verified traffic was being split between both servers by temporarily
+4. Verified traffic was being split between both servers by temporarily
    editing the heading in Web02's `index.html` file so it displayed
    differently from Web01. I initially tried to verify this by watching
    each server's `server.log` file live in the terminal, but ran into
@@ -135,7 +135,7 @@ restriction rather than an application issue.
 
 ## Demo video
 
-`[LINK TO YOUR DEMO VIDEO]`
+`[https://youtu.be/fvz90RLTbvs]`
 
 ## Credits
 
